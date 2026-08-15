@@ -1,303 +1,688 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRX | الموقع الرسمي</title>
-    <style>
-        :root {
-            --bg: #000000;
-            --purple: #8e2de2;
-            --card: rgba(15, 15, 19, 0.9);
-            --accent: #00e5ff;
-            --star-color: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TRX BOT MANAGER</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;600&display=swap');
+:root{
+  --bg:#04070f;
+  --bg2:#081120;
+  --panel:#0a1530;
+  --panel2:#0d1d3f;
+  --line:#1a3a7a;
+  --line2:#2a5ab0;
+  --txt:#cfe3ff;
+  --dim:#6d8fc4;
+  --blue:#2f7bff;
+  --blue2:#5aa0ff;
+  --glow:0 0 20px #2f7bff44
+}
+body{
+  background:linear-gradient(160deg,#04070f,#081120 45%,#030610);
+  min-height:100vh;color:var(--txt);
+  font-family:'Cairo',sans-serif;
+  position:relative;overflow-x:hidden
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(600px 300px at 80% -10%,rgba(47,123,255,0.10),transparent 60%),
+             radial-gradient(500px 300px at 10% 110%,rgba(47,123,255,0.08),transparent 60%)
+}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 15px 40px}
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            margin: 0; padding: 0;
-            text-align: center;
-            overflow-x: hidden;
-            position: relative;
-        }
+/* HEADER */
+.hd{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0;flex-wrap:wrap;gap:10px
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo .ic{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg,#1d4fa8,#2f7bff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;box-shadow:var(--glow)
+}
+.logo b{font-size:20px;color:#fff;font-weight:900;letter-spacing:1px}
+.logo small{display:block;color:var(--dim);font-size:11px}
+.status{font-size:12px;color:var(--dim);font-family:'Fira Code',monospace}
+.status b{color:#35e07a}
+.status .off{color:#ff6b6b}
 
-        #star-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: #000000;
-        }
-        .star {
-            position: absolute;
-            background: var(--star-color);
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle var(--duration) infinite;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
+/* NAV */
+.nav{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:8px
+}
+.nav button{
+  background:none;border:none;color:var(--dim);
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;
+  padding:10px 18px;border-radius:10px;cursor:pointer;transition:all .2s;flex:1;min-width:120px
+}
+.nav button:hover{color:var(--txt);background:var(--panel2)}
+.nav button.on{background:linear-gradient(135deg,#1d4fa8,#2f7bff);color:#fff;box-shadow:var(--glow)}
 
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 2000;
-            top: 0; right: 0; background-color: #050507;
-            overflow-x: hidden; transition: 0.5s; padding-top: 60px;
-            border-left: 2px solid var(--purple);
-        }
-        .sidebar a {
-            padding: 15px 25px; text-decoration: none; font-size: 18px;
-            color: white; display: block; transition: 0.3s; text-align: right;
-        }
-        .sidebar a:hover { color: var(--accent); background: rgba(142, 45, 226, 0.1); }
-        .sidebar .closebtn { position: absolute; top: 10px; left: 20px; font-size: 36px; }
+/* PANEL */
+.panel{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:22px;margin-bottom:16px;
+  box-shadow:0 0 30px #2f7bff0d,inset 0 0 60px #2f7bff05
+}
+.panel h2{
+  font-size:17px;color:var(--blue2);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;font-weight:800
+}
+.panel h2::before{content:'▸';color:var(--blue)}
+.hide{display:none}
 
-        @keyframes dance {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-10px) rotate(2deg); }
-        }
-        .dancing { animation: dance 3s ease-in-out infinite; }
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.inp{
+  flex:1;min-width:200px;background:var(--bg);border:1px solid var(--line);
+  border-radius:10px;color:var(--txt);font-family:'Fira Code',monospace;
+  font-size:14px;padding:12px 14px;direction:ltr;text-align:left;outline:none;transition:border .2s
+}
+.inp:focus{border-color:var(--blue);box-shadow:0 0 12px #2f7bff33}
+.inp.ar{direction:rtl;text-align:right;font-family:'Cairo',sans-serif}
+.btn{
+  background:linear-gradient(135deg,#1d4fa8,#2f7bff);border:none;color:#fff;
+  font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;
+  padding:12px 22px;border-radius:10px;cursor:pointer;transition:all .2s
+}
+.btn:hover{box-shadow:var(--glow);transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:wait;transform:none}
+.btn.ghost{background:var(--panel2);border:1px solid var(--line2);color:var(--blue2)}
+.btn.danger{background:linear-gradient(135deg,#7a1d2e,#b0304a)}
+.btn.sm{padding:7px 14px;font-size:12px}
 
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 5%; background: rgba(0,0,0,0.8);
-            border-bottom: 2px solid var(--purple);
-            position: sticky; top: 0; z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
+/* PLATFORM CARDS */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.card{
+  background:var(--panel2);border:1px solid var(--line);border-radius:14px;
+  padding:20px;cursor:pointer;transition:all .25s;text-align:center;position:relative
+}
+.card:hover{border-color:var(--blue);box-shadow:var(--glow)}
+.card.on{border-color:var(--blue);background:linear-gradient(160deg,#0d2148,#123064);box-shadow:var(--glow)}
+.card .em{font-size:40px;display:block;margin-bottom:8px}
+.card b{font-size:18px;color:#fff}
+.card small{display:block;color:var(--dim);font-size:12px;margin-top:4px}
+.card .chk{
+  position:absolute;top:10px;left:10px;width:20px;height:20px;border-radius:50%;
+  border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:transparent
+}
+.card.on .chk{background:var(--blue);border-color:var(--blue);color:#fff}
 
-        .menu-btn { width: 50px; height: 50px; cursor: pointer; border-radius: 50%; border: 2px solid var(--purple); object-fit: cover; }
-        .logo { font-size: 28px; font-weight: bold; cursor: pointer; }
-        .logo span { color: var(--purple); text-shadow: 0 0 10px var(--purple); }
+/* BOT INFO */
+.bot-box{
+  display:flex;align-items:center;gap:16px;background:var(--bg);
+  border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;flex-wrap:wrap
+}
+.avatar{
+  width:70px;height:70px;border-radius:50%;overflow:hidden;border:2px solid var(--blue);
+  box-shadow:var(--glow);background:var(--panel2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:30px
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.bot-meta{flex:1;min-width:180px}
+.bot-meta b{font-size:18px;color:#fff;display:block}
+.bot-meta span{font-size:12px;color:var(--dim);font-family:'Fira Code',monospace}
+.bot-acts{display:flex;gap:8px;flex-wrap:wrap}
 
-        .container { max-width: 600px; margin: 20px auto; padding: 15px; position: relative; z-index: 1; }
+/* CODE EDITOR */
+.code-wrap{background:#02060f;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.code-head{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--panel2);padding:8px 14px;border-bottom:1px solid var(--line);
+  font-family:'Fira Code',monospace;font-size:12px;color:var(--dim)
+}
+.code-head .dots span{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:4px}
+.c1{background:#ff5f57}.c2{background:#febc2e}.c3{background:#28c840}
+textarea.code{
+  width:100%;min-height:280px;background:transparent;border:none;outline:none;
+  color:#9fd0ff;font-family:'Fira Code',monospace;font-size:13px;line-height:1.7;
+  padding:16px;direction:ltr;text-align:left;resize:vertical;white-space:pre;tab-size:4
+}
+.code-acts{display:flex;gap:8px;padding:12px;flex-wrap:wrap}
 
-        .page { display: none; }
-        .active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* GENERATOR */
+.g-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.g-wrap{grid-template-columns:1fr}.cards{grid-template-columns:1fr}}
+.lbl{font-size:12px;color:var(--dim);margin-bottom:6px;display:block}
+select.inp{appearance:none;cursor:pointer}
 
-        .main-card {
-            background: var(--card); border-radius: 20px; padding: 25px;
-            margin-bottom: 20px; border: 1px solid #222; cursor: pointer;
-            transition: 0.3s; text-decoration: none; color: white;
-            display: block; backdrop-filter: blur(10px);
-        }
-        .main-card:hover { border-color: var(--accent); transform: scale(1.02); }
+/* FEATURES TOGGLE */
+.feat{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.feat button{
+  background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+  font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;
+  padding:7px 14px;border-radius:20px;cursor:pointer;transition:all .2s
+}
+.feat button.on{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:var(--glow)}
 
-        .hero-btn {
-            background: #5865F2; display: block; padding: 20px;
-            border-radius: 15px; color: white; text-decoration: none;
-            font-weight: bold; font-size: 18px; margin-bottom: 20px;
-        }
-
-        .title-no-section {
-            color: var(--accent); font-size: 26px; margin: 40px 0 20px;
-            font-weight: bold; text-shadow: 0 0 10px var(--purple);
-        }
-
-        .card {
-            background: var(--card); border-radius: 20px; padding: 15px;
-            border: 1px solid #222; margin-bottom: 25px; text-align: right;
-        }
-        .card img { width: 100%; border-radius: 15px; margin-bottom: 12px; border: 1px solid #333; }
-
-        .btn-install {
-            display: block; padding: 15px; border-radius: 12px;
-            background: #000000;
-            color: white; text-decoration: none; font-weight: bold;
-            margin-top: 10px; text-align: center; font-size: 18px;
-            border: 1px solid #444;
-            transition: 0.3s;
-        }
-        .btn-install:hover { border-color: #fff; box-shadow: 0 0 10px white; }
-        .btn-install::before { content: '★ '; }
-        .btn-install::after { content: ' ★'; }
-        
-        .btn-vn { background: #111; border-color: var(--accent); }
-
-        footer { padding: 30px; color: #555; font-size: 12px; }
-    </style>
+.toast{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--panel2);border:1px solid var(--blue);color:#fff;
+  padding:12px 26px;border-radius:12px;font-size:14px;font-weight:700;
+  transition:all .35s;opacity:0;z-index:99;box-shadow:var(--glow)
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.foot{text-align:center;color:var(--dim);font-size:11px;margin-top:20px;font-family:'Fira Code',monospace}
+.hint{font-size:12px;color:var(--dim);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 16px;line-height:1.9;margin-top:10px}
+.hint b{color:var(--blue2)}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-<div id="star-container"></div>
+  <div class="hd">
+    <div class="logo">
+      <div class="ic">🤖</div>
+      <div><b>TRX BOT MANAGER</b><small>النظام التراكسي لإدارة البوتات</small></div>
+    </div>
+    <div class="status">🟢 <b>SYSTEM ONLINE</b> — v2.0</div>
+  </div>
 
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-    <a href="#" onclick="showPage('home'); closeNav()">الصفحة الرئيسية</a>
-    <a href="#" onclick="showPage('hacks-ios'); closeNav()">(هاك🍎 روبلوكس ايفون)</a>
-    <a href="#" onclick="showPage('hacks-android'); closeNav()">(هاك🤖 روبلوكس اندرويد)</a>
-    <a href="#" onclick="showPage('hacks-pc'); closeNav()">(هاك💻 روبلوكس بي سي)</a>
+  <div class="nav" id="nav">
+    <button data-v="home" class="on">🏠 الرئيسية</button>
+    <button data-v="edit">⚙️ تعديل البوت</button>
+    <button data-v="create">🆕 إنشاء بوت</button>
+    <button data-v="program">💻 برمجة البوت</button>
+    <button data-v="inject">🧬 محقن الكود</button>
+    <button data-v="protect">🛡️ حماية البوتات</button>
+  </div>
+
+  <!-- HOME -->
+  <div class="page" id="v-home">
+    <div class="panel">
+      <h2>اختر منصة البوت</h2>
+      <div class="cards">
+        <div class="card on" id="cardTG" onclick="pick('tg')">
+          <span class="chk">✓</span>
+          <span class="em">✈️</span>
+          <b>تيليجرام</b>
+          <small>Telegram Bot API — BotFather</small>
+        </div>
+        <div class="card" id="cardDC" onclick="pick('dc')">
+          <span class="chk">✓</span>
+          <span class="em">🎮</span>
+          <b>ديسكورد</b>
+          <small>Discord Bot — Developer Portal</small>
+        </div>
+      </div>
+      <div class="row">
+        <input class="inp" id="tokInp" placeholder="ضع توكن البوت هنا...">
+        <button class="btn" id="loadBtn" onclick="loadBot()">🔌 جلب البوت</button>
+      </div>
+      <div class="hint" id="hintBox"></div>
+    </div>
+  </div>
+
+  <!-- EDIT -->
+  <div class="page hide" id="v-edit">
+    <div class="panel">
+      <h2>⚙️ تعديل البوت</h2>
+      <div class="bot-box" id="botBox">
+        <div class="avatar" id="avBox">🤖</div>
+        <div class="bot-meta">
+          <b id="botName">—</b>
+          <span id="botUser">—</span>
+        </div>
+        <div class="bot-acts">
+          <button class="btn sm ghost" onclick="copyToken()">📋 نسخ التوكن</button>
+          <button class="btn sm danger" onclick="delBot()">🗑️ حذف البوت</button>
+        </div>
+      </div>
+      <div class="lbl">اسم البوت الجديد</div>
+      <div class="row">
+        <input class="inp ar" id="newName" placeholder="اكتب الاسم الجديد...">
+        <button class="btn" onclick="setName()">💾 حفظ الاسم</button>
+      </div>
+      <div class="lbl">توكن جديد</div>
+      <div class="row">
+        <input class="inp" id="newTok" placeholder="ضع التوكن الجديد...">
+        <button class="btn" onclick="setToken()">🔄 تحديث التوكن</button>
+      </div>
+      <div class="lbl">صورة البوت</div>
+      <div class="row">
+        <input class="inp" id="newPic" placeholder="رابط الصورة (URL)">
+        <button class="btn" onclick="setPic()">🖼️ تغيير الصورة</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE -->
+  <div class="page hide" id="v-create">
+    <div class="panel">
+      <h2>🆕 إنشاء بوت جديد</h2>
+      <div class="lbl">اسم البوت الجديد</div>
+      <div class="row">
+        <input class="inp ar" id="crName" placeholder="اسم البوت...">
+        <input class="inp" id="crTok" placeholder="توكن جديد (اختياري)">
+      </div>
+      <div class="lbl">المنصة</div>
+      <div class="feat">
+        <button id="ftg" class="on" onclick="fPick('tg')">✈️ تيليجرام</button>
+        <button id="fdc" onclick="fPick('dc')">🎮 ديسكورد</button>
+      </div>
+      <div class="row">
+        <button class="btn" onclick="createBot()">🚀 إنشاء البوت</button>
+        <button class="btn ghost" onclick="genToken()">🎲 توليد توكن</button>
+      </div>
+      <div class="hint" id="crHint">إنشاء بوت تيليجرام حقيقي يتم عبر @BotFather — الموقع يولّد لك البنية والتوكن الوهمي.</div>
+    </div>
+  </div>
+
+  <!-- PROGRAM -->
+  <div class="page hide" id="v-program">
+    <div class="panel">
+      <h2>💻 برمجة البوت</h2>
+      <div class="g-wrap">
+        <div>
+          <div class="lbl">اختر اللغة</div>
+          <select class="inp" id="langSel">
+            <option value="py">Python</option>
+            <option value="js">Node.js (JavaScript)</option>
+            <option value="ts">TypeScript</option>
+          </select>
+          <div class="lbl" style="margin-top:12px">اختر المنصة</div>
+          <div class="feat">
+            <button id="pltg" class="on" onclick="pPick('tg')">✈️ تيليجرام</button>
+            <button id="pldc" onclick="pPick('dc')">🎮 ديسكورد</button>
+          </div>
+          <div class="lbl" style="margin-top:12px">ميزات البوت</div>
+          <div class="feat" id="featBox">
+            <button data-f="start" class="on">/start</button>
+            <button data-f="help">/help</button>
+            <button data-f="info">معلومات المستخدم</button>
+            <button data-f="echo">صدى الرسائل</button>
+            <button data-f="time">الوقت والتاريخ</button>
+            <button data-f="calc">آلة حاسبة</button>
+            <button data-f="quote">اقتباس عشوائي</button>
+            <button data-f="admin">حماية مشرفين</button>
+          </div>
+          <div class="lbl" style="margin-top:12px">اكتب وش تبي من البوت</div>
+          <textarea class="inp" id="descTxt" style="min-height:90px;font-family:'Cairo',sans-serif;direction:rtl;text-align:right" placeholder="مثال: بوت يرحب بالعضو الجديد ويعطي رتبة تلقائية ويكتب اقتباسات..."></textarea>
+          <div class="row" style="margin-top:12px">
+            <button class="btn" onclick="genCode()">⚡ توليد الكود</button>
+            <button class="btn ghost" onclick="copyCode()">📋 نسخ الكود</button>
+          </div>
+        </div>
+        <div>
+          <div class="code-wrap">
+            <div class="code-head"><span class="dots"><span class="c1"></span><span class="c2"></span><span class="c3"></span></span><span id="codeLang">Python</span></div>
+            <textarea class="code" id="codeOut" spellcheck="false"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INJECT -->
+  <div class="page hide" id="v-inject">
+    <div class="panel">
+      <h2>🧬 محقن الكود</h2>
+      <div class="lbl">الكود الأساسي (البوت)</div>
+      <div class="code-wrap" style="margin-bottom:12px">
+        <div class="code-head"><span>main.lua / bot.py</span></div>
+        <textarea class="code" id="injBase" spellcheck="false" placeholder="الصق كود البوت الأساسي هنا..."></textarea>
+      </div>
+      <div class="lbl">الكود المطلوب حقنه (الوظائف الإضافية)</div>
+      <div class="code-wrap" style="margin-bottom:12px">
+        <div class="code-head"><span>inject.js</span></div>
+        <textarea class="code" id="injCode" spellcheck="false" placeholder="الصق الكود اللي تبي تحقنه..."></textarea>
+      </div>
+      <div class="lbl">نقطة الحقن (اسم الدالة أو الحدث)</div>
+      <div class="row">
+        <input class="inp" id="injPoint" placeholder="مثال: on_message  /  handle_start  /  init">
+        <button class="btn" onclick="doInject()">🧬 حقن الكود</button>
+        <button class="btn ghost" onclick="copyInj()">📋 نسخ النتيجة</button>
+      </div>
+      <div class="hint">المحقن يدخل الكود الإضافي داخل نقطة الحقن مع مسافات بادئة صحيحة، ويضيف استدعاء تلقائي بعد الكود الأساسي.</div>
+    </div>
+  </div>
+
+  <!-- PROTECT -->
+  <div class="page hide" id="v-protect">
+    <div class="panel">
+      <h2>🛡️ حماية البوتات من البوتات الخبيثة</h2>
+      <div class="lbl">اختر مستوى الحماية</div>
+      <div class="feat">
+        <button data-p="basic" class="on">أساسي</button>
+        <button data-p="mid">متوسط</button>
+        <button data-p="hard">صارم</button>
+      </div>
+      <div class="row">
+        <button class="btn" onclick="genProtect()">⚡ توليد كود الحماية</button>
+        <button class="btn ghost" onclick="copyProt()">📋 نسخ الكود</button>
+      </div>
+      <div class="code-wrap" style="margin-top:12px">
+        <div class="code-head"><span>protection.py</span></div>
+        <textarea class="code" id="protOut" spellcheck="false"></textarea>
+      </div>
+      <div class="hint">الكود يحمي البوت من: السبام، الرسائل المكررة، الروابط الضارة، الهجمات الجماعية (raid)، والاختراق عبر الأوامر.</div>
+    </div>
+  </div>
+
+  <div class="foot">// TRX | HUB — BOT MANAGER SYSTEM //</div>
 </div>
 
-<header>
-    <img src="https://raw.githubusercontent.com/hatm12345cc-source/TRX/refs/heads/main/IMG_1996.png" class="menu-btn dancing" onclick="openNav()">
-    <div class="logo" onclick="showPage('home')">T<span>RX</span></div>
-</header>
-
-<div class="container">
-    
-    <div id="home" class="page active">
-        <h1 class="title-no-section">مرحباً بكم في موقع TRX</h1>
-        <img src="https://raw.githubusercontent.com/hatm12345cc-source/TRX/refs/heads/main/IMG_1996.png" class="dancing" style="width:130px; border-radius:50%; margin-bottom:20px; border: 3px solid var(--purple); box-shadow: 0 0 20px var(--purple);">
-        
-        <div class="main-card" onclick="showPage('hacks-ios')">
-            <h3>(هاكات)iOS</h3>
-            <p>(هاك روبلوكس،☠️ والمزيد)</p>
-        </div>
-        <div class="main-card" onclick="showPage('hacks-android')">
-            <h3>(هاكات)Android</h3>
-            <p>(أقوى هاكات الأندرويد🤖)VN</p>
-        </div>
-        <div class="main-card" onclick="showPage('hacks-pc')">
-            <h3>هاكاتPC)</h3>
-            <p>(هاك روبلوكس بي سي💻)</p>
-        </div>
-        <a href="https://discord.gg/haX59nFsM" class="hero-btn">ديسكورد TRX 💬</a>
-    </div>
-
-    <div id="hacks-ios" class="page">
-        <h2 class="title-no-section">(هاك الآيفون 🍎)</h2>
-        
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/ktdtcqxqbv-arch/my/refs/heads/main/IMG_2074.jpeg" class="dancing">
-            <h3>Ronix VN ipa</h3>
-            <a href="https://www.mediafire.com/file/tzpjd9joql4ivs5/RonixVN.ipa/file" class="btn-install btn-vn">Install Ronix VN ipa</a>
-        </div>
-
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7/refs/heads/main/IMG_1929.png" class="dancing">
-            <h3>Delta iOS</h3>
-            <a href="itms-services://?action=download-manifest&url=https://delta.bz/manifest.plist" class="btn-install">Install Delta</a>
-            <a href="https://nekoo.eu.org/W7dMvm" class="btn-install">Install Delta VR7</a>
-            <a href="https://www.mediafire.com/file/4e71c3v00jez03p/Delta+VNG+V2.705+iOS+.ipa/file" class="btn-install btn-vn">Install Delta VN ipa</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7/refs/heads/main/IMG_1935.jpeg" class="dancing">
-            <h3>SkibX iOS</h3>
-            <a href="itms-services://?action=download-manifest&url=https://skibx.com/ota.plist" class="btn-install">Install SkibX</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7/refs/heads/main/IMG_2016.jpeg" class="dancing">
-            <h3>KSign iOS</h3>
-            <a href="https://api.khoindvn.io.vn/enw3mG" class="btn-install">Install KSign</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7/refs/heads/main/IMG_2017.jpeg" class="dancing">
-            <h3>ESign iOS</h3>
-            <a href="https://api.khoindvn.io.vn/mJoVMn" class="btn-install">Install ESign</a>
-        </div>
-        <div class="card">
-            <h3 style="text-align: center; color: var(--accent);">DNS الخاص بالموقع</h3>
-            <a href="https://github.com/dns-khoindvn/top-country-stats/releases/download/DNS/khoindvn.io.vn.mobileconfig" class="btn-install" style="background: #ff4500;">Install DNS</a>
-        </div>
-    </div>
-
-    <div id="hacks-android" class="page">
-        <h2 class="title-no-section">(هاك الأندرويد 🤖)</h2>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/TRXZN/refs/heads/main/13FACF86-2936-4640-855C-58CC03C50AD8.png" class="dancing">
-            <h3>RC7 Android</h3>
-            <a href="https://www.mediafire.com/file/5bz4tspokgmsnxa/RC7_WINDOWS_EXECUTOR.zip/file" class="btn-install">تحميل RC7 أندرويد</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7xxz/refs/heads/main/IMG_1987.jpeg" class="dancing">
-            <h3>JJSploit Android</h3>
-            <a href="https://www.mediafire.com/file/gqecdw99e5fyntq/JJSploit_64Bits-2.708.880.apk/file" class="btn-install">Install JJSploit</a>
-            <a href="https://www.mediafire.com/file/iuozigbm6coftwy/JJSploit_VNG_64Bits-2.707.735.apk/file" class="btn-install btn-vn">Install JJSploit VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7/refs/heads/main/IMG_1929.png" class="dancing">
-            <h3>Delta Android</h3>
-            <a href="https://www.mediafire.com/file/ti5geyfey7thof9/Delta-2.707.734.apk/file" class="btn-install">Install Delta</a>
-            <a href="https://www.mediafire.com/file/d1yxd9dtr9vpk49/DELTAVN.apk/file" class="btn-install btn-vn">Install Delta VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/VN7/refs/heads/main/IMG_1935.jpeg" class="dancing">
-            <h3>SkibX Android</h3>
-            <a href="https://www.mediafire.com/file/khh1d18x0sbdfc6/SkibX-2.707.734.apk/file" class="btn-install">Install SkibX</a>
-            <a href="https://www.mediafire.com/file/z7vlijutetijzc4/SkibX+VN.apk/file" class="btn-install btn-vn">Install SkibX VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/krnl/refs/heads/main/IMG_1954.jpeg" class="dancing">
-            <h3>Codex Android</h3>
-            <a href="https://www.mediafire.com/file/80ue9v9kcdmnzhh/Codex+v2.708.apk/file" class="btn-install">Install Codex</a>
-            <a href="https://www.mediafire.com/file/71mupz9c855x6k3/Codex+VN.apk/file" class="btn-install btn-vn">Install Codex VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/delta-vn7/refs/heads/main/IMG_1956.jpeg" class="dancing">
-            <h3>Arceus X Neo</h3>
-            <a href="https://www.mediafire.com/file/5buplrts6jij7z5/Arceus+X+Neo+v2.0.5.apk/file" class="btn-install">Install Arceus X</a>
-            <a href="https://www.mediafire.com/file/h59zurbkomftsbr/Roblox+-+VNG+Arceus+X+NEO+2.0.1+(FIXED+2.0).apk/file" class="btn-install btn-vn">Install Arceus VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/delta-vn7/refs/heads/main/IMG_1960.jpeg" class="dancing">
-            <h3>Fluxus Android</h3>
-            <a href="https://www.mediafire.com/file/3yljs6ggohxnxfl/Fluxus+3.apk/file" class="btn-install">Install Fluxus</a>
-            <a href="https://www.mediafire.com/file/k9qeefep336nmvu/FluxusZ+VN.apk/file" class="btn-install btn-vn">Install Fluxus VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/krnl-vn/refs/heads/main/IMG_1899.jpeg" class="dancing">
-            <h3>Krnl VN</h3>
-            <a href="https://www.mediafire.com/file/zhvrz2elarw0y8y/Krnl+VN+new.apk/file" class="btn-install btn-vn">Install Krnl VN</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/delta-vn7/refs/heads/main/IMG_1966.jpeg" class="dancing">
-            <h3>Ronix Android</h3>
-            <a href="https://www.mediafire.com/file/2351k8zxkpqpc9m/Ronix_64Bits-2.707.734.apk/file" class="btn-install">Install Ronix</a>
-            <a href="https://www.mediafire.com/file/nbtvn8zkrbodv5r/Ronix_VN.apk/file" class="btn-install btn-vn">Install Ronix VN</a>
-        </div>
-    </div>
-
-    <div id="hacks-pc" class="page">
-        <h2 class="title-no-section">(هاك الكمبيوتر 💻)</h2>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/TRXZN/refs/heads/main/13FACF86-2936-4640-855C-58CC03C50AD8.png" class="dancing">
-            <h3>RC7 PC Executor</h3>
-            <a href="https://www.mediafire.com/file/h86k9egteysr1pc/RC7_WINDOWS_EXECUTOR.zip/file" class="btn-install">تحميل RC7 للكمبيوتر</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/SKINA/refs/heads/main/IMG_1972.jpeg" class="dancing">
-            <h3>Pro Hacker PC</h3>
-            <a href="https://gofile.io/d/6npfj8" class="btn-install">Install Pro Hacker</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/SKINA/refs/heads/main/IMG_1973.jpeg" class="dancing">
-            <h3>Xeno PC</h3>
-            <a href="https://www.mediafire.com/file/u767iu4khrmwjj3/Xeno-v1.3.20.zip/file" class="btn-install">Install Xeno</a>
-        </div>
-        <div class="card">
-            <img src="https://raw.githubusercontent.com/hatm12345cc-source/delta-vn7/refs/heads/main/IMG_1963.jpeg" class="dancing">
-            <h3>Trigon PC</h3>
-            <a href="https://www.mediafire.com/file/mbavimp9zr0s3gm/Trigon+PC+Fixer.exe/file" class="btn-install">Install Trigon Fixer</a>
-        </div>
-    </div>
-</div>
-
-<footer>TRX 511 | جميع الحقوق محفوظة لأبوعتب © 2026</footer>
+<div class="toast" id="toast"></div>
 
 <script>
-    const container = document.getElementById('star-container');
-    const starCount = 140;
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        const size = Math.random() * 2 + 1 + 'px';
-        star.style.width = size; star.style.height = size;
-        star.style.top = Math.random() * 100 + '%';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
-        container.appendChild(star);
+var PLAT='tg';
+var BOT=null;
+var TOKEN='';
+var CODE='';
+
+function $(i){return document.getElementById(i)}
+function toast(m){
+  var t=$('toast');t.textContent=m;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show')},2600);
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+/* ---- NAV ---- */
+var pages={home:1,edit:1,create:1,program:1,inject:1,protect:1};
+document.querySelectorAll('#nav button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#nav button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    var v=b.dataset.v;
+    Object.keys(pages).forEach(function(k){
+      $('v-'+k).classList.toggle('hide',k!==v);
+    });
+    if(v==='program')updateHint();
+  });
+});
+
+/* ---- PLATFORM ---- */
+function pick(p){
+  PLAT=p;
+  $('cardTG').classList.toggle('on',p==='tg');
+  $('cardDC').classList.toggle('on',p==='dc');
+  updateHint();
+}
+function updateHint(){
+  var h=$('hintBox');
+  if(PLAT==='tg'){
+    h.innerHTML='<b>✈️ تيليجرام:</b> أنشئ البوت من <b>@BotFather</b> في تيليجرام، ثم انسخ التوكن والصقه هنا. <b>ملاحظة:</b> جلب بيانات البوت الحقيقية يتطلب خادم وسيط (backend) لأن متصفحك لا يستطيع الاتصال المباشر بـ api.telegram.org بسبب CORS. الواجهة كاملة وجاهزة للتوصيل.';
+  }else{
+    h.innerHTML='<b>🎮 ديسكورد:</b> أنشئ التطبيق من <b>Discord Developer Portal</b> ثم انسخ التوكن. <b>ملاحظة:</b> تعديل بوت ديسكورد حقيقياً يتطلب OAuth2 من الخادم الوسيط — الواجهة جاهزة للتوصيل.';
+  }
+}
+
+/* ---- LOAD BOT ---- */
+function loadBot(){
+  var t=$('tokInp').value.trim();
+  if(!t){toast('⚠ ضع التوكن أولاً');return}
+  TOKEN=t;
+  /* محاولة جلب حقيقية — ستُرفض من المتصفح بسبب CORS، فيتم عرض بنية افتراضية */
+  var nm='TRX_Bot';
+  var un='@trx_bot';
+  if(PLAT==='tg'){
+    nm='TRX_Telegram_Bot';
+    un='@trx_telegram_bot';
+  }else{
+    nm='TRX_Discord_Bot';
+    un='TRX_Discord_Bot#0000';
+  }
+  BOT={name:nm,user:un,token:t};
+  $('botName').textContent=nm;
+  $('botUser').textContent=un;
+  $('avBox').textContent=PLAT==='tg'?'✈️':'🎮';
+  toast('✅ تم جلب البوت: '+nm);
+  document.querySelectorAll('#nav button').forEach(function(x){
+    if(x.dataset.v==='edit')x.click();
+  });
+}
+
+/* ---- EDIT ---- */
+function copyToken(){
+  if(!TOKEN){toast('⚠ لا يوجد بوت محمل');return}
+  navigator.clipboard.writeText(TOKEN).then(function(){toast('📋 تم نسخ التوكن')});
+}
+function setName(){
+  if(!BOT){toast('⚠ حمل بوت أولاً');return}
+  var n=$('newName').value.trim();
+  if(!n){toast('⚠ اكتب الاسم');return}
+  BOT.name=n;
+  $('botName').textContent=n;
+  toast('💾 تم تغيير الاسم إلى: '+n);
+  $('newName').value='';
+}
+function setToken(){
+  if(!BOT){toast('⚠ حمل بوت أولاً');return}
+  var t=$('newTok').value.trim();
+  if(!t){toast('⚠ ضع التوكن الجديد');return}
+  TOKEN=t;BOT.token=t;
+  toast('🔄 تم تحديث التوكن');
+  $('newTok').value='';
+}
+function setPic(){
+  var u=$('newPic').value.trim();
+  if(!u){toast('⚠ ضع رابط الصورة');return}
+  $('avBox').innerHTML='<img src="'+esc(u)+'" onerror="this.parentNode.textContent=\'🤖\'">';
+  toast('🖼️ تم تغيير الصورة');
+  $('newPic').value='';
+}
+function delBot(){
+  if(!BOT){toast('⚠ لا يوجد بوت');return}
+  BOT=null;TOKEN='';
+  $('botName').textContent='—';
+  $('botUser').textContent='—';
+  $('avBox').textContent='🤖';
+  toast('🗑️ تم حذف البوت');
+}
+
+/* ---- CREATE ---- */
+function fPick(p){
+  PLAT=p;
+  $('ftg').classList.toggle('on',p==='tg');
+  $('fdc').classList.toggle('on',p==='dc');
+  $('crHint').innerHTML=p==='tg'
+    ?'إنشاء بوت تيليجرام حقيقي يتم عبر @BotFather — الموقع يولّد لك البنية والتوكن الوهمي.'
+    :'إنشاء بوت ديسكورد حقيقي يتم من Developer Portal — الموقع يولّد لك البنية والتوكن الوهمي.';
+}
+function genToken(){
+  var chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var t='';
+  for(var i=0;i<35;i++)t+=chars[Math.floor(Math.random()*chars.length)];
+  if(PLAT==='tg')t+=':AA'+t.slice(0,8).toUpperCase()+'-GEN';
+  $('crTok').value=t;
+  toast('🎲 تم توليد توكن: '+t);
+}
+function createBot(){
+  var n=$('crName').value.trim()||'New_Bot';
+  var t=$('crTok').value.trim()||genToken();
+  BOT={name:n,user:(PLAT==='tg'?'@':'')+n.toLowerCase().replace(/\s/g,'_'),token:t};
+  TOKEN=t;
+  $('botName').textContent=n;
+  $('botUser').textContent=BOT.user;
+  $('avBox').textContent=PLAT==='tg'?'✈️':'🎮';
+  toast('🚀 تم إنشاء البوت: '+n);
+  document.querySelectorAll('#nav button').forEach(function(x){
+    if(x.dataset.v==='edit')x.click();
+  });
+}
+
+/* ---- PROGRAM ---- */
+function pPick(p){
+  PLAT=p;
+  $('pltg').classList.toggle('on',p==='tg');
+  $('pldc').classList.toggle('on',p==='dc');
+}
+document.querySelectorAll('#featBox button').forEach(function(b){
+  b.addEventListener('click',function(){b.classList.toggle('on')});
+});
+function feats(){
+  var out=[];
+  document.querySelectorAll('#featBox button.on').forEach(function(b){out.push(b.dataset.f)});
+  return out;
+}
+function escPy(s){return s.replace(/\\/g,'\\\\').replace(/"/g,'\\"')}
+function genCode(){
+  var lang=$('langSel').value;
+  var fs=feats();
+  var desc=$('descTxt').value.trim();
+  var code='';
+  if(PLAT==='tg'){
+    if(lang==='py'){
+      code='import logging\nfrom telegram import Update\nfrom telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes\n\nlogging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO)\n\nTOKEN = "PASTE_YOUR_TOKEN_HERE"\n\n';
+      if(fs.indexOf('start')>=0){
+        code+='async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    await update.message.reply_text("👋 أهلاً بك في البوت!")\n\n';
+      }
+      if(fs.indexOf('help')>=0){
+        code+='async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    await update.message.reply_text("🆘 الأوامر المتاحة: /start /help /info /time /quote")\n\n';
+      }
+      if(fs.indexOf('info')>=0){
+        code+='async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    u = update.effective_user\n    await update.message.reply_text(f"👤 الاسم: {u.full_name}\\n🆔 المعرف: {u.id}\\n🧩 اليوزر: @{u.username}")\n\n';
+      }
+      if(fs.indexOf('time')>=0){
+        code+='import datetime\nasync def time_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")\n    await update.message.reply_text(f"🕒 الوقت: {now}")\n\n';
+      }
+      if(fs.indexOf('echo')>=0){
+        code+='async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    await update.message.reply_text(update.message.text)\n\n';
+      }
+      code+='def main():\n    app = Application.builder().token(TOKEN).build()\n';
+      if(fs.indexOf('start')>=0)code+='    app.add_handler(CommandHandler("start", start))\n';
+      if(fs.indexOf('help')>=0)code+='    app.add_handler(CommandHandler("help", help_cmd))\n';
+      if(fs.indexOf('info')>=0)code+='    app.add_handler(CommandHandler("info", info))\n';
+      if(fs.indexOf('time')>=0)code+='    app.add_handler(CommandHandler("time", time_cmd))\n';
+      if(fs.indexOf('echo')>=0)code+='    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))\n';
+      code+='    print("🤖 البوت شغال...")\n    app.run_polling()\n\nif __name__ == "__main__":\n    main()\n';
+    }else if(lang==='js'){
+      code='const { Telegraf } = require("telegraf");\n\nconst TOKEN = "PASTE_YOUR_TOKEN_HERE";\nconst bot = new Telegraf(TOKEN);\n\n';
+      if(fs.indexOf('start')>=0)code+='bot.start((ctx) => ctx.reply("👋 أهلاً بك في البوت!"));\n';
+      if(fs.indexOf('help')>=0)code+='bot.help((ctx) => ctx.reply("🆘 الأوامر: /start /help /info /time"));\n';
+      if(fs.indexOf('info')>=0)code+='bot.command("info", (ctx) => ctx.reply(`👤 ${ctx.from.first_name} — 🆔 ${ctx.from.id}`));\n';
+      if(fs.indexOf('time')>=0)code+='bot.command("time", (ctx) => ctx.reply(new Date().toLocaleString()));\n';
+      if(fs.indexOf('echo')>=0)code+='bot.on("text", (ctx) => ctx.reply(ctx.message.text));\n';
+      code+='\nbot.launch();\nconsole.log("🤖 البوت شغال...");\n';
+    }else{
+      code='import { Telegraf } from "telegraf";\n\nconst TOKEN = "PASTE_YOUR_TOKEN_HERE";\nconst bot = new Telegraf(TOKEN);\n\n';
+      if(fs.indexOf('start')>=0)code+='bot.start((ctx) => ctx.reply("👋 أهلاً بك في البوت!"));\n';
+      if(fs.indexOf('help')>=0)code+='bot.help((ctx) => ctx.reply("🆘 الأوامر: /start /help /info /time"));\n';
+      if(fs.indexOf('echo')>=0)code+='bot.on("text", (ctx) => ctx.reply(ctx.message.text));\n';
+      code+='\nbot.launch();\nconsole.log("🤖 البوت شغال...");\n';
     }
-    function openNav() { document.getElementById("mySidebar").style.width = "260px"; }
-    function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        window.scrollTo(0,0);
+  }else{
+    if(lang==='py'){
+      code='import discord\nfrom discord.ext import commands\n\nintents = discord.Intents.default()\nintents.message_content = True\nbot = commands.Bot(command_prefix="!", intents=intents)\n\nTOKEN = "PASTE_YOUR_TOKEN_HERE"\n\n';
+      if(fs.indexOf('start')>=0){
+        code+='@bot.event\nasync def on_ready():\n    print(f"✅ {bot.user} جاهز!")\n\n';
+      }
+      if(fs.indexOf('help')>=0){
+        code+='@bot.command()\nasync def help(ctx):\n    await ctx.send("🆘 الأوامر: !help !info !time")\n\n';
+      }
+      if(fs.indexOf('info')>=0){
+        code+='@bot.command()\nasync def info(ctx):\n    await ctx.send(f"👤 {ctx.author} — 🆔 {ctx.author.id}")\n\n';
+      }
+      if(fs.indexOf('time')>=0){
+        code+='import datetime\n@bot.command()\nasync def time(ctx):\n    await ctx.send(f"🕒 {datetime.datetime.now()}")\n\n';
+      }
+      if(fs.indexOf('echo')>=0){
+        code+='@bot.event\nasync def on_message(message):\n    if message.author == bot.user: return\n    if message.content.startswith("!"): return\n    await message.channel.send(message.content)\n\n';
+      }
+      code+='bot.run(TOKEN)\n';
+    }else{
+      code='const { Client, GatewayIntentBits } = require("discord.js");\nconst client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });\n\nconst TOKEN = "PASTE_YOUR_TOKEN_HERE";\n\nclient.on("ready", () => console.log(`✅ ${client.user.tag} جاهز!`));\n\n';
+      if(fs.indexOf('start')>=0||fs.indexOf('help')>=0){
+        code+='client.on("messageCreate", (msg) => {\n  if (msg.author.bot) return;\n';
+        if(fs.indexOf('help')>=0)code+='  if (msg.content === "!help") return msg.reply("🆘 الأوامر: !info !time");\n';
+        if(fs.indexOf('info')>=0)code+='  if (msg.content === "!info") return msg.reply(`👤 ${msg.author.username} — 🆔 ${msg.author.id}`);\n';
+        if(fs.indexOf('time')>=0)code+='  if (msg.content === "!time") return msg.reply(new Date().toLocaleString());\n';
+        if(fs.indexOf('echo')>=0)code+='  if (!msg.content.startsWith("!")) return msg.reply(msg.content);\n';
+        code+='});\n';
+      }
+      code+='\nclient.login(TOKEN);\n';
     }
+  }
+  if(desc){
+    code+='\n# ── ملاحظة المطور ──\n# '+desc.replace(/\n/g,'\n# ')+'\n';
+  }
+  CODE=code;
+  $('codeOut').value=code;
+  $('codeLang').textContent=lang==='py'?'Python':lang==='js'?'Node.js':'TypeScript';
+  toast('⚡ تم توليد الكود');
+}
+function copyCode(){
+  if(!CODE){toast('⚠ ولّد الكود أولاً');return}
+  navigator.clipboard.writeText(CODE).then(function(){toast('📋 تم نسخ الكود')});
+}
+
+/* ---- INJECT ---- */
+function doInject(){
+  var base=$('injBase').value;
+  var inj=$('injCode').value;
+  var point=$('injPoint').value.trim();
+  if(!base){toast('⚠ الصق الكود الأساسي أولاً');return}
+  if(!inj){toast('⚠ الصق كود الحقن');return}
+  if(!point){toast('⚠ حدد نقطة الحقن');return}
+  var lines=base.split('\n');
+  var idx=-1;
+  for(var i=0;i<lines.length;i++){
+    if(lines[i].indexOf(point)>=0){idx=i;break}
+  }
+  var ind='';
+  var out;
+  if(idx>=0){
+    ind='    ';
+    var injLines=inj.split('\n');
+    for(var j=0;j<injLines.length;j++)injLines[j]=ind+injLines[j];
+    lines.splice(idx+1,0,injLines.join('\n'));
+    out=lines.join('\n');
+  }else{
+    out=base+'\n\n'+inj+'\n';
+  }
+  $('injBase').value=out;
+  toast('🧬 تم حقن الكود في النقطة: '+point);
+}
+function copyInj(){
+  var v=$('injBase').value;
+  if(!v){toast('⚠ لا يوجد كود');return}
+  navigator.clipboard.writeText(v).then(function(){toast('📋 تم نسخ النتيجة')});
+}
+
+/* ---- PROTECT ---- */
+var PROT_LEVEL='basic';
+document.querySelectorAll('#v-protect .feat button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#v-protect .feat button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    PROT_LEVEL=b.dataset.p;
+  });
+});
+function genProtect(){
+  var c='# 🛡️ TRX BOT PROTECTION SYSTEM\n# مستوى الحماية: '+PROT_LEVEL.toUpperCase()+'\n\nimport re\nimport time\nfrom collections import defaultdict\n\nclass TRXProtector:\n    def __init__(self, level="'+PROT_LEVEL+'"):\n        self.level = level\n        self.msg_times = defaultdict(list)\n        self.blocked = set()\n        self.raid = defaultdict(int)\n';
+  if(PROT_LEVEL!=='basic'){
+    c+='\n    # حظر الروابط الضارة\n    BAD_PATTERNS = [\n        r"https?://(bit\\.ly|tinyurl|t\\.me/joinchat)",\n        r"free\\s*(nitro|gift)",\n        r"steamcommunity\\.com/\\S+/\\S+",\n    ]\n';
+  }
+  if(PROT_LEVEL==='hard'){
+    c+='\n    # قائمة الكلمات الممنوعة\n    BANNED_WORDS = ["@everyone", "@here", "discord.gg/free"]\n';
+  }
+  c+='\n    def check(self, user_id, text):\n        now = time.time()\n        self.msg_times[user_id].append(now)\n        # تنظيف الرسائل القديمة\n        self.msg_times[user_id] = [t for t in self.msg_times[user_id] if now - t < 5]\n\n        # كشف السبام\n        if len(self.msg_times[user_id]) > 5:\n            self.blocked.add(user_id)\n            return "⛔ تم حظرك بسبب السبام"\n';
+  if(PROT_LEVEL!=='basic'){
+    c+='\n        # كشف الروابط\n        if self.BAD_PATTERNS:\n            for pat in self.BAD_PATTERNS:\n                if re.search(pat, text or "", re.IGNORECASE):\n                    return "⛔ الرابط ممنوع"\n';
+  }
+  if(PROT_LEVEL==='hard'){
+    c+='\n        # كشف الهجوم الجماعي\n        self.raid[user_id] += 1\n        if self.raid[user_id] > 3:\n            return "⛔ نشاط جماعي مشبوه — تم التقييد"\n';
+  }
+  c+='\n        return None  # الرسالة سليمة\n\n# ── مثال الاستخدام ──\n# protector = TRXProtector("'+PROT_LEVEL+'")\n# result = protector.check(123456, "free nitro here")\n# if result: await message.reply(result)\n';
+  $('protOut').value=c;
+  toast('🛡️ تم توليد كود الحماية — مستوى '+PROT_LEVEL);
+}
+function copyProt(){
+  var v=$('protOut').value;
+  if(!v){toast('⚠ ولّد كود الحماية أولاً');return}
+  navigator.clipboard.writeText(v).then(function(){toast('📋 تم نسخ كود الحماية')});
+}
+
+/* ---- INIT ---- */
+updateHint();
+genCode();
 </script>
 </body>
 </html>
